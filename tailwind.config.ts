@@ -61,6 +61,10 @@ const config: Config = {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        largeCard: {
+          DEFAULT: "hsl(var(--largeCard))",
+          foreground: "hsl(var(--largeCard-foreground))",
+        },
       },
     },
   },

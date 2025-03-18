@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "next-themes";
 import { Geist } from "next/font/google";
+import PdfSelection from "./(home)/pdf-selection";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -22,7 +23,16 @@ export default function RootLayout({
       <body>
         <ThemeProvider attribute="class" enableSystem forcedTheme="dark">
           <Toaster position="top-center" richColors />
-          {children}
+
+          <main className="container mx-auto px-4 lg:px-8 py-12 transition-all duration-300">
+            <div className="flex flex-col xl:flex-row xl:justify-between gap-10 xl:gap-20">
+              <div className="xl:w-3/4 flex flex-col gap-10">{children}</div>
+
+              <div className="xl:w-1/4 xl:pt-[60px]">
+                <PdfSelection />
+              </div>
+            </div>
+          </main>
         </ThemeProvider>
       </body>
     </html>

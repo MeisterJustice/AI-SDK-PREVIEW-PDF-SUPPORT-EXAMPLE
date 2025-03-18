@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { FileUp, Plus, Loader2 } from "lucide-react";
+import { FileUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,7 +11,6 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Link } from "@/components/ui/link";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function PdfSelection() {
@@ -52,7 +51,7 @@ export default function PdfSelection() {
 
   return (
     <div
-      className="min-h-[100dvh] w-full flex justify-center"
+      className="w-full flex justify-center"
       onDragOver={(e) => {
         e.preventDefault();
         setIsDragging(true);
@@ -107,8 +106,8 @@ export default function PdfSelection() {
                 accept="application/pdf"
                 className="absolute inset-0 opacity-0 cursor-pointer"
               />
-              <FileUp className="h-8 w-8 mb-2 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground text-center">
+              <FileUp className="h-8 w-8 mb-2" />
+              <p className="text-sm text-center">
                 {files.length > 0 ? (
                   <span className="font-medium text-foreground">
                     {files[0].name}
