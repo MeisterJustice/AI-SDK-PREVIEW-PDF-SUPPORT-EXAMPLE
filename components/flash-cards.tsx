@@ -30,11 +30,13 @@ const FlashCards = ({
       return;
     }
 
+    setDirection(1);
     setIsFlipped(false);
     setCurrentIndex((prev) => (prev + 1) % flashCards.length);
   };
 
   const handlePrev = () => {
+    setDirection(-1);
     setIsFlipped(false);
     setCurrentIndex(
       (prev) => (prev - 1 + flashCards.length) % flashCards.length
@@ -48,35 +50,26 @@ const FlashCards = ({
     showFileInput(true);
   };
 
-  const springConfig = {
-    type: "spring",
-    stiffness: 400,
-    damping: 15,
-  };
-
-  const cardVariants = {
-    initial: (direction: number) => ({
-      rotateY: direction === 1 ? -90 : direction === -1 ? 90 : 0,
-      opacity: direction !== 0 ? 0 : 1,
-      transition: springConfig,
-    }),
-    animate: {
-      rotateY: 0,
-      opacity: 1,
-      transition: springConfig,
-    },
-    exit: (direction: number) => ({
-      rotateY: direction === 1 ? 90 : direction === -1 ? -90 : 0,
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 300 : -300,
       opacity: 0,
-      transition: springConfig,
+      rotateY: direction > 0 ? -90 : 90,
     }),
-    flipped: {
-      rotateX: 180,
-      transition: springConfig,
+    center: {
+      x: 0,
+      opacity: 1,
+      rotateY: 0,
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 30,
+        duration: 0.4,
+      },
     },
-    unflipped: {
-      rotateX: 0,
-      transition: springConfig,
+    exit: {
+      opacity: 0,
+      transition: { duration: 0.2 },
     },
   };
 
@@ -100,34 +93,40 @@ const FlashCards = ({
         }`}
         style={{ perspective: "1200px" }}
       >
-        <AnimatePresence custom={direction} mode="wait">
+        <AnimatePresence custom={direction} mode="popLayout">
           <motion.div
-            className="w-full h-full absolute"
+            key={currentIndex}
             custom={direction}
-            variants={cardVariants}
-            initial="initial"
-            animate={isFlipped ? "flipped" : "unflipped"}
+            variants={variants}
+            initial="enter"
+            animate="center"
             exit="exit"
+            className="w-full h-full absolute cursor-pointer"
+            onClick={() => setIsFlipped((prev) => !prev)}
             style={{ transformStyle: "preserve-3d" }}
           >
-            <div
-              className="w-full h-full relative cursor-pointer"
-              onClick={() => setIsFlipped(!isFlipped)}
+            <motion.div
+              animate={{ rotateX: isFlipped ? 180 : 0 }}
+              transition={{
+                type: "spring",
+                stiffness: 800,
+                damping: 40,
+                duration: 0.3,
+              }}
+              className="w-full h-full relative"
               style={{ transformStyle: "preserve-3d" }}
             >
-              <motion.div
-                className="w-full h-full bg-largeCard rounded-lg p-8 flex items-center justify-center absolute shadow-lg"
-                style={{
-                  backfaceVisibility: "hidden",
-                }}
+              <div
+                className="absolute w-full h-full bg-largeCard rounded-lg p-8 flex items-center justify-center shadow-lg"
+                style={{ backfaceVisibility: "hidden" }}
               >
                 <p className="text-2xl lg:text-3xl font-medium text-center">
                   {flashCards[currentIndex].question}
                 </p>
-              </motion.div>
+              </div>
 
-              <motion.div
-                className="w-full h-full bg-largeCard rounded-lg p-8 flex items-center justify-center absolute shadow-lg"
+              <div
+                className="absolute w-full h-full bg-largeCard rounded-lg p-8 flex items-center justify-center shadow-lg"
                 style={{
                   backfaceVisibility: "hidden",
                   transform: "rotateX(180deg)",
@@ -136,8 +135,8 @@ const FlashCards = ({
                 <p className="text-2xl lg:text-3xl font-medium text-center">
                   {flashCards[currentIndex].answer}
                 </p>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </motion.div>
         </AnimatePresence>
       </div>
@@ -153,6 +152,7 @@ const FlashCards = ({
         <span className="text-sm w-10 text-center">
           {currentIndex + 1} / {flashCards.length}
         </span>
+
         <button
           onClick={handleNext}
           className="p-2 rounded-full hover:bg-muted transition-colors"
