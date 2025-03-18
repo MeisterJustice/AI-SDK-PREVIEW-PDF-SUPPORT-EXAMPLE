@@ -149,7 +149,7 @@ const FlashCards = ({
           <ChevronLeft className="w-6 h-6" />
         </button>
 
-        <span className="text-sm w-10 text-center">
+        <span className="text-sm w-10 text-center whitespace-nowrap">
           {currentIndex + 1} / {flashCards.length}
         </span>
 

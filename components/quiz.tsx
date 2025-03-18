@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, Check, X, RefreshCw } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Check,
-  X,
-  RefreshCw,
-  FileText,
-} from "lucide-react";
-import QuizScore from "./score";
-import QuizReview from "./quiz-overview";
 import { QuizQuestion } from "@/store/quiz/schema";
 import useSystemFunctions from "@/hooks/useSystemFunctions";
+import QuizScore from "./score";
+import QuizReview from "./quiz-overview";
+
 type QuizProps = {
   questions: QuizQuestion[];
   title: string;
@@ -69,6 +64,33 @@ const QuestionCard: React.FC<{
       </div>
     </div>
   );
+};
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.5,
+    },
+  },
+};
+
+const scoreVariants = {
+  hidden: { scale: 0 },
+  visible: {
+    scale: 1,
+    transition: { type: "spring", stiffness: 260, damping: 20 },
+  },
+};
+
+const reviewVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.5 } },
+};
+
+const resetVariants = {
+  hidden: { x: "-100%" },
+  visible: { x: 0, transition: { type: "tween", duration: 0.5 } },
 };
 
 export default function Quiz() {
@@ -139,8 +161,6 @@ export default function Quiz() {
         <div className="relative">
           {!isSubmitted && <Progress value={progress} className="h-1 mb-8" />}
           <div className="min-h-[400px]">
-            {" "}
-            {/* Prevent layout shift */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={isSubmitted ? "results" : currentQuestionIndex}
@@ -182,24 +202,38 @@ export default function Quiz() {
                     </div>
                   </div>
                 ) : (
-                  <div className="space-y-8">
-                    <QuizScore
-                      correctAnswers={score ?? 0}
-                      totalQuestions={questions.length}
-                    />
-                    <div className="space-y-12">
+                  <motion.div
+                    className="space-y-8"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <motion.div variants={scoreVariants}>
+                      <QuizScore
+                        correctAnswers={score ?? 0}
+                        totalQuestions={questions.length}
+                      />
+                    </motion.div>
+
+                    <motion.div
+                      variants={reviewVariants}
+                      className="space-y-12"
+                    >
                       <QuizReview questions={questions} userAnswers={answers} />
-                    </div>
-                    <div className="flex justify-center space-x-4 pt-4">
-                      <Button
-                        onClick={handleReset}
-                        variant="outline"
-                        className="bg-muted hover:bg-muted/80 w-full"
-                      >
-                        <RefreshCw className="mr-2 h-4 w-4" /> Reset Quiz
-                      </Button>
-                    </div>
-                  </div>
+                    </motion.div>
+
+                    <motion.div variants={resetVariants}>
+                      <div className="flex justify-center space-x-4 pt-4">
+                        <Button
+                          onClick={handleReset}
+                          variant="outline"
+                          className="bg-muted hover:bg-muted/80 w-full"
+                        >
+                          <RefreshCw className="mr-2 h-4 w-4" /> Reset Quiz
+                        </Button>
+                      </div>
+                    </motion.div>
+                  </motion.div>
                 )}
               </motion.div>
             </AnimatePresence>
