@@ -1,4 +1,4 @@
-import { questionSchema, questionsSchema } from "@/lib/schemas";
+import { questionSchema, questionsSchema } from "@/store/quiz/schema";
 import { google } from "@ai-sdk/google";
 import { streamObject } from "ai";
 

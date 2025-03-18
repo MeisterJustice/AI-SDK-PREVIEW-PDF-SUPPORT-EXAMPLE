@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { FileUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,7 @@ import useAppActions from "@/store/app/actions";
 
 export default function PdfSelection() {
   const { appState } = useSystemFunctions();
-  const { savePdfFiles } = useAppActions();
+  const { savePdfFiles, loadExamplePdf } = useAppActions();
 
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -53,6 +53,10 @@ export default function PdfSelection() {
       setFiles([]);
     }, 1000);
   };
+
+  useEffect(() => {
+    loadExamplePdf();
+  }, []);
 
   if (!appState.showFileSelector) {
     return <div></div>;

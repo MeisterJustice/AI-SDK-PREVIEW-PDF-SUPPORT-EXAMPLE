@@ -12,16 +12,15 @@ import {
 } from "lucide-react";
 import QuizScore from "./score";
 import QuizReview from "./quiz-overview";
-import { Question } from "@/lib/schemas";
-
+import { QuizQuestion } from "@/store/quiz/schema";
+import useSystemFunctions from "@/hooks/useSystemFunctions";
 type QuizProps = {
-  questions: Question[];
-  clearPDF: () => void;
+  questions: QuizQuestion[];
   title: string;
 };
 
 const QuestionCard: React.FC<{
-  question: Question;
+  question: QuizQuestion;
   selectedAnswer: string | null;
   onSelectAnswer: (answer: string) => void;
   isSubmitted: boolean;
@@ -45,10 +44,10 @@ const QuestionCard: React.FC<{
               showCorrectAnswer && answerLabels[index] === question.answer
                 ? "bg-green-600 hover:bg-green-700"
                 : showCorrectAnswer &&
-                    selectedAnswer === answerLabels[index] &&
-                    selectedAnswer !== question.answer
-                  ? "bg-red-600 hover:bg-red-700"
-                  : ""
+                  selectedAnswer === answerLabels[index] &&
+                  selectedAnswer !== question.answer
+                ? "bg-red-600 hover:bg-red-700"
+                : ""
             }`}
             onClick={() => onSelectAnswer(answerLabels[index])}
           >
@@ -72,25 +71,17 @@ const QuestionCard: React.FC<{
   );
 };
 
-export default function Quiz({
-  questions,
-  clearPDF,
-  title = "Quiz",
-}: QuizProps) {
+export default function Quiz() {
+  const { quizState } = useSystemFunctions();
+  const { questions, title = "Quiz" } = quizState;
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<string[]>(
-    Array(questions.length).fill(null),
+    Array(questions.length).fill(null)
   );
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setProgress((currentQuestionIndex / questions.length) * 100);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [currentQuestionIndex, questions.length]);
 
   const handleSelectAnswer = (answer: string) => {
     if (!isSubmitted) {
@@ -131,6 +122,13 @@ export default function Quiz({
   };
 
   const currentQuestion = questions[currentQuestionIndex];
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setProgress((currentQuestionIndex / questions.length) * 100);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [currentQuestionIndex, questions.length]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -199,12 +197,6 @@ export default function Quiz({
                         className="bg-muted hover:bg-muted/80 w-full"
                       >
                         <RefreshCw className="mr-2 h-4 w-4" /> Reset Quiz
-                      </Button>
-                      <Button
-                        onClick={clearPDF}
-                        className="bg-primary hover:bg-primary/90 w-full"
-                      >
-                        <FileText className="mr-2 h-4 w-4" /> Try Another PDF
                       </Button>
                     </div>
                   </div>

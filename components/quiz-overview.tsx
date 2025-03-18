@@ -1,10 +1,10 @@
 import { Check, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Question } from "@/lib/schemas";
+import { QuizQuestion } from "@/store/quiz/schema";
 
 interface QuizReviewProps {
-  questions: Question[];
+  questions: QuizQuestion[];
   userAnswers: string[];
 }
 
