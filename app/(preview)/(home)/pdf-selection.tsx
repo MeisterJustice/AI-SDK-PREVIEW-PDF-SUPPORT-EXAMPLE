@@ -12,8 +12,13 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { AnimatePresence, motion } from "framer-motion";
+import useSystemFunctions from "@/hooks/useSystemFunctions";
+import useAppActions from "@/store/app/actions";
 
 export default function PdfSelection() {
+  const { appState } = useSystemFunctions();
+  const { savePdfFiles } = useAppActions();
+
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -42,12 +47,16 @@ export default function PdfSelection() {
 
   const handleUseFile = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //
+
+    savePdfFiles(files);
+    setTimeout(() => {
+      setFiles([]);
+    }, 1000);
   };
 
-  const clearPDF = () => {
-    setFiles([]);
-  };
+  if (!appState.showFileSelector) {
+    return <div></div>;
+  }
 
   return (
     <div

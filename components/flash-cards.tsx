@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Result from "./result";
+import useAppActions from "@/store/app/actions";
 
 const flashCards = [
   {
@@ -19,7 +20,14 @@ const flashCards = [
   },
 ];
 
-const FlashCards = ({ isLarge = false }: { isLarge?: boolean }) => {
+const FlashCards = ({
+  isLarge = false,
+  hideInput = false,
+}: {
+  isLarge?: boolean;
+  hideInput?: boolean;
+}) => {
+  const { showFileInput } = useAppActions();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [direction, setDirection] = useState(0);
@@ -28,6 +36,9 @@ const FlashCards = ({ isLarge = false }: { isLarge?: boolean }) => {
   const handleNext = () => {
     if (currentIndex === flashCards.length - 1) {
       setShowResult(true);
+      if (hideInput) {
+        showFileInput(false);
+      }
       return;
     }
 
@@ -46,6 +57,7 @@ const FlashCards = ({ isLarge = false }: { isLarge?: boolean }) => {
     setShowResult(false);
     setCurrentIndex(0);
     setIsFlipped(false);
+    showFileInput(true);
   };
 
   const springConfig = {
