@@ -1,20 +1,23 @@
 import { Copy } from "lucide-react";
 import testTypes from "@/app/(preview)/(home)/data";
+import Header from "./header";
 
 interface PageWrapperProps {
   children: React.ReactNode;
-  variant?:
+  variant:
     | "flashcards"
     | "quiz"
     | "match"
     | "true-or-false"
     | "fill-in-the-blank"
     | "multiple-choice";
+  showVariantHeader?: boolean;
 }
 
 const PageWrapper = ({
   children,
-  variant = "flashcards",
+  variant,
+  showVariantHeader = true,
 }: PageWrapperProps) => {
   const testType = testTypes.find(
     (type) => type.name.toLowerCase().replace(/\s+/g, "-") === variant
@@ -31,17 +34,23 @@ const PageWrapper = ({
 
   return (
     <section className="xl:min-h-[calc(100vh-6rem)] xl:flex xl:flex-col xl:justify-center">
-      <div className="flex items-center justify-center gap-2 pb-3">
-        <div className="w-6 h-6 text-icon">
-          <IconComponent
-            className="w-6 h-6 text-icon"
-            fill="currentColor"
-            strokeWidth={1.5}
-          />
-        </div>
+      <Header icon={IconComponent} title={displayTitle} />
 
-        <span className="text-nowrap text-xl font-medium">{displayTitle}</span>
-      </div>
+      {showVariantHeader && (
+        <div className="flex items-center justify-center gap-2 pb-3">
+          <div className="w-6 h-6 text-icon">
+            <IconComponent
+              className="w-6 h-6 text-icon"
+              fill="currentColor"
+              strokeWidth={1.5}
+            />
+          </div>
+
+          <span className="text-nowrap text-xl font-medium">
+            {displayTitle}
+          </span>
+        </div>
+      )}
 
       {children}
     </section>

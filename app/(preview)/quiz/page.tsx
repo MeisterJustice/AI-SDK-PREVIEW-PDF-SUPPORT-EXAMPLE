@@ -5,23 +5,9 @@ import { experimental_useObject } from "ai/react";
 import { questionsSchema } from "@/lib/schemas";
 import { z } from "zod";
 import { toast } from "sonner";
-import { FileUp, Plus, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { Loader2 } from "lucide-react";
 import Quiz from "@/components/quiz";
-import { Link } from "@/components/ui/link";
-import NextLink from "next/link";
 import { generateQuizTitle } from "./actions";
-import { AnimatePresence, motion } from "framer-motion";
-import { VercelIcon, GitIcon } from "@/components/icons";
 import PageWrapper from "@/components/ui/page-wrapper";
 import { encodeFileAsBase64 } from "@/lib/utils";
 
@@ -29,7 +15,6 @@ export default function ChatWithFiles() {
   const [questions, setQuestions] = useState<z.infer<typeof questionsSchema>>(
     []
   );
-  const [isDragging, setIsDragging] = useState(false);
   const [title, setTitle] = useState<string>();
   const [isLoading, setIsLocalLoading] = useState(true);
 
@@ -111,25 +96,16 @@ export default function ChatWithFiles() {
     loadExamplePdf();
   }, []);
 
-  const progress = partialQuestions ? (partialQuestions.length / 4) * 100 : 0;
-
-  if (isLoading || questions.length === 0) {
+  if (isLoading || isGenerating || questions.length === 0) {
     return (
-      <PageWrapper variant="quiz">
-        <div className="flex flex-col items-center justify-center space-y-6 w-full max-w-md mx-auto">
-          <div className="text-sm">Generating quiz from example.pdf...</div>
-
-          <div className="flex flex-col items-center justify-center space-y-4 w-full">
-            <Loader2 className="h-10 w-10 animate-spin text-icon" />
-            <Progress value={progress} className="w-full" />
-          </div>
-        </div>
-      </PageWrapper>
+      <div className="min-h-[calc(100vh-6rem)] flex items-center justify-center h-full">
+        <Loader2 className="h-10 w-10 animate-spin text-icon" />
+      </div>
     );
   }
 
   return (
-    <PageWrapper variant="quiz">
+    <PageWrapper variant="quiz" showVariantHeader={false}>
       <Quiz title={title ?? "Quiz"} questions={questions} clearPDF={clearPDF} />
     </PageWrapper>
   );
