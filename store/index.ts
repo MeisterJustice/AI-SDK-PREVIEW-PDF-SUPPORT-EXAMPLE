@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import appReducer from "./app";
 import quizReducer from "./quiz";
+import flashcardsReducer from "./flashcards";
 
 export interface CallbackProps {
   onSuccess?: Function;
@@ -13,6 +14,7 @@ export const store = configureStore({
   reducer: {
     app: appReducer,
     quiz: quizReducer,
+    flashcards: flashcardsReducer,
   },
 });
 

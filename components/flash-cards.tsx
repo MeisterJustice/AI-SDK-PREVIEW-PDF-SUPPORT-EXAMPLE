@@ -3,22 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Result from "./result";
 import useAppActions from "@/store/app/actions";
-
-const flashCards = [
-  {
-    question:
-      "What is the capital of France? What is the capital of France? What is the capital of France? What is the capital of France? What is the capital of France?",
-    answer: "Paris",
-  },
-  {
-    question: "What is 2 + 2?",
-    answer: "4",
-  },
-  {
-    question: "Who painted the Mona Lisa?",
-    answer: "Leonardo da Vinci",
-  },
-];
+import useSystemFunctions from "@/hooks/useSystemFunctions";
 
 const FlashCards = ({
   isLarge = false,
@@ -27,11 +12,14 @@ const FlashCards = ({
   isLarge?: boolean;
   hideInput?: boolean;
 }) => {
+  const { flashcardsState } = useSystemFunctions();
   const { showFileInput } = useAppActions();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [direction, setDirection] = useState(0);
   const [showResult, setShowResult] = useState(false);
+
+  const flashCards = flashcardsState.flashcards;
 
   const handleNext = () => {
     if (currentIndex === flashCards.length - 1) {
@@ -95,7 +83,7 @@ const FlashCards = ({
   if (showResult) {
     return (
       <Result
-        numberOfCorrectAnswers={2}
+        numberOfCorrectAnswers={flashCards.length}
         numberOfQuestions={flashCards.length}
         restart={handleRestart}
       />

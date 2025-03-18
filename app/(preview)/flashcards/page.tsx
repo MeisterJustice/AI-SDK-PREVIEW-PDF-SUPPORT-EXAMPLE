@@ -1,20 +1,16 @@
 "use client";
+import { Loader2 } from "lucide-react";
 
 import FlashCards from "@/components/flash-cards";
 import PageWrapper from "@/components/ui/page-wrapper";
-import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import useSystemFunctions from "@/hooks/useSystemFunctions";
 
 export default function FlashCardsPage() {
-  const [loading, setLoading] = useState(true);
+  const { flashcardsState } = useSystemFunctions();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
+  const { flashcards, loading } = flashcardsState;
 
-  if (loading) {
+  if (loading || flashcards.length === 0) {
     return (
       <div className="min-h-[calc(100vh-6rem)] flex items-center justify-center h-full">
         <Loader2 className="h-10 w-10 animate-spin text-icon" />

@@ -18,6 +18,7 @@ const useSystemFunctions = () => {
   // states
   const appState = useAppSelector((state) => state.app);
   const quizState = useAppSelector((state) => state.quiz);
+  const flashcardsState = useAppSelector((state) => state.flashcards);
 
   return {
     // functions
@@ -30,6 +31,7 @@ const useSystemFunctions = () => {
     // states
     appState,
     quizState,
+    flashcardsState,
   };
 };
 

@@ -1,10 +1,21 @@
 "use client";
 
+import { useEffect } from "react";
 import FlashCards from "@/components/flash-cards";
+import useSystemFunctions from "@/hooks/useSystemFunctions";
+import useFlashcardsActions from "@/store/flashcards/actions";
 import testTypes from "./data";
 import TestOption from "./test-option";
 
 export default function Home() {
+  const { flashcardsState, appState } = useSystemFunctions();
+  const { generateFlashcards } = useFlashcardsActions();
+  const { flashcards, loading } = flashcardsState;
+
+  useEffect(() => {
+    generateFlashcards();
+  }, [appState.files]);
+
   return (
     <section>
       <h1 className="text-2xl lg:text-3xl font-bold">Finance Quiz 1</h1>
@@ -18,7 +29,7 @@ export default function Home() {
           ))}
         </div>
 
-        <FlashCards />
+        {!loading && flashcards.length > 0 && <FlashCards />}
       </div>
     </section>
   );
