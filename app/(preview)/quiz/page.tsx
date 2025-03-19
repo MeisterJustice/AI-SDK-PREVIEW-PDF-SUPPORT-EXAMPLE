@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { Loader2 } from "lucide-react";
 import Quiz from "@/components/quiz";
 import PageWrapper from "@/components/ui/page-wrapper";
 import useSystemFunctions from "@/hooks/useSystemFunctions";
@@ -17,6 +16,7 @@ export default function ChatWithFiles() {
   // Load example.pdf from public folder on component mount
   useEffect(() => {
     generateQuestions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appState.files]);
 
   if (loading || questions.length === 0) {

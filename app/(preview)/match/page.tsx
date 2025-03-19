@@ -82,6 +82,7 @@ export default function MatchPage() {
 
   useEffect(() => {
     generateMatchItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appState.files]);
 
   useEffect(() => {
@@ -89,6 +90,7 @@ export default function MatchPage() {
       setGameCompleted(true);
       showFileInput(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matchedItems]);
 
   if (!gameStarted) {
@@ -145,17 +147,6 @@ export default function MatchPage() {
             </Button>
           </div>
         </div>
-
-        {gameCompleted && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-green-100 dark:bg-green-900 p-4 rounded-lg mb-8 text-center"
-          >
-            <p className="text-lg font-bold">Congratulations! 🎉</p>
-            <p>You've matched all the pairs correctly!</p>
-          </motion.div>
-        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {items.map((item) => {

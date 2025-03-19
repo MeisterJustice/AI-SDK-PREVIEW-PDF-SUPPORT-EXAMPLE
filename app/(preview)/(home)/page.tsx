@@ -6,7 +6,6 @@ import useSystemFunctions from "@/hooks/useSystemFunctions";
 import useFlashcardsActions from "@/store/flashcards/actions";
 import testTypes from "./data";
 import TestOption from "./test-option";
-import { Loader2 } from "lucide-react";
 import Loader from "@/components/ui/loader";
 
 export default function Home() {
@@ -16,6 +15,7 @@ export default function Home() {
 
   useEffect(() => {
     generateFlashcards();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appState.files]);
 
   if (loading && flashcards.length === 0) {

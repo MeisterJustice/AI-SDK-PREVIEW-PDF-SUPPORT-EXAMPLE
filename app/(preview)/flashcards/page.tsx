@@ -15,6 +15,7 @@ export default function FlashCardsPage() {
 
   useEffect(() => {
     generateFlashcards();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appState.files]);
 
   if (loading && flashcards.length === 0) {

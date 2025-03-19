@@ -56,6 +56,7 @@ const PdfSelection = () => {
 
   useEffect(() => {
     loadExamplePdf();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!appState.showFileSelector) {
