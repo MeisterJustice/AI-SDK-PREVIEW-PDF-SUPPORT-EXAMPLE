@@ -1,14 +1,20 @@
 "use client";
 import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
 
 import FlashCards from "@/components/flash-cards";
 import PageWrapper from "@/components/ui/page-wrapper";
 import useSystemFunctions from "@/hooks/useSystemFunctions";
+import useFlashcardsActions from "@/store/flashcards/actions";
 
 export default function FlashCardsPage() {
-  const { flashcardsState } = useSystemFunctions();
-
+  const { flashcardsState, appState } = useSystemFunctions();
+  const { generateFlashcards } = useFlashcardsActions();
   const { flashcards, loading } = flashcardsState;
+
+  useEffect(() => {
+    generateFlashcards();
+  }, [appState.files]);
 
   if (loading || flashcards.length === 0) {
     return (
