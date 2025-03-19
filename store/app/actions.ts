@@ -4,7 +4,7 @@ import { setFiles, setShowFileSelector } from ".";
 import { setFlashcards } from "../flashcards";
 
 const useAppActions = () => {
-  const { dispatch } = useSystemFunctions();
+  const { dispatch, appState } = useSystemFunctions();
 
   const savePdfFiles = (files: File[]) => {
     dispatch(setFiles(files));
@@ -18,6 +18,10 @@ const useAppActions = () => {
 
   const loadExamplePdf = async () => {
     try {
+      if (appState.files.length > 0) {
+        return;
+      }
+
       const response = await fetch("/example.pdf");
       if (!response.ok) {
         throw new Error(

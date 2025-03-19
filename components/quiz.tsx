@@ -145,6 +145,7 @@ export default function Quiz() {
     setScore(null);
     setCurrentQuestionIndex(0);
     setProgress(0);
+    showFileInput(true);
   };
 
   const currentQuestion = questions[currentQuestionIndex];

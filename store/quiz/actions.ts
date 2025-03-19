@@ -32,7 +32,6 @@ const useQuizActions = () => {
     const files = providedFiles || (appState.files as File[]) || [];
 
     if (files.length === 0) {
-      toast.error("No files selected.");
       return;
     }
 
