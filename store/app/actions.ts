@@ -1,12 +1,14 @@
 import { toast } from "sonner";
 import useSystemFunctions from "@/hooks/useSystemFunctions";
 import { setFiles, setShowFileSelector } from ".";
+import { setFlashcards } from "../flashcards";
 
 const useAppActions = () => {
   const { dispatch } = useSystemFunctions();
 
   const savePdfFiles = (files: File[]) => {
     dispatch(setFiles(files));
+    dispatch(setFlashcards([]));
     toast.success("File saved");
   };
 

@@ -107,7 +107,7 @@ const Result = ({
 
           <div className="text-center">
             <p className="text-lg mb-2">
-              You scored{" "}
+              You answered{" "}
               <span className="font-bold text-icon">
                 {numberOfCorrectAnswers}
               </span>{" "}
