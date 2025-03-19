@@ -59,6 +59,10 @@ const FlashCards = ({
   };
 
   const handlePrev = () => {
+    if (currentIndex === 0) {
+      return;
+    }
+
     setDirection(-1);
     setIsFlipped(false);
     setCurrentIndex(
