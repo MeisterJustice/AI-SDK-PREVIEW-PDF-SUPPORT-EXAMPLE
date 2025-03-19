@@ -233,49 +233,20 @@ Each feature has its own Redux slice with:
 4. **Actions**: Functions that trigger state changes
 5. **Selectors**: Functions to access specific state
 
-Example of a slice structure:
-
-```typescript
-// State definition
-export interface MatchState {
-  items: MatchItem[];
-  loading: boolean;
-  title: string;
-  activeItem: string | null;
-  matchedPairs: string[];
-  gameCompleted: boolean;
-}
-
-// Reducers
-export const matchReducer = createSlice({
-  name: "match",
-  initialState,
-  reducers: {
-    setMatchItems(state, action: PayloadAction<MatchItem[]>) {
-      state.items = action.payload;
-      state.activeItem = null;
-      state.matchedPairs = [];
-      state.gameCompleted = false;
-    },
-    // Other reducers...
-  },
-});
-```
-
 ## 🚀 Getting Started
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/pdf-learning-assistant.git
+git clone https://github.com/MeisterJustice/AI-SDK-PREVIEW-PDF-SUPPORT-EXAMPLE.git
 
 # Navigate to project directory
 cd pdf-learning-assistant
 
 # Install dependencies
-npm install
+yarn install
 
 # Start development server
-npm run dev
+yarn dev
 ```
 
 Visit http://localhost:3000 to see the application in action.
