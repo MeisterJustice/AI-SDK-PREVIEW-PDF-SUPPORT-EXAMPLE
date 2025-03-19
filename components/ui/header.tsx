@@ -3,11 +3,18 @@ import { ChevronDown, Copy } from "lucide-react";
 import { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Backdrop from "./backdrop";
 
 interface HeaderProps {
   icon?: LucideIcon;
   title?: string;
 }
+
+const dropdownVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+};
 
 const Header = ({ icon, title }: HeaderProps) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -15,15 +22,14 @@ const Header = ({ icon, title }: HeaderProps) => {
 
   const displayTitle = title || "Flashcards";
 
-  // Filter out the current test type to create dropdown items
   const otherTestTypes = testTypes.filter((type) => type.name !== displayTitle);
 
   return (
-    <nav className="absolute top-0 left-0 right-0 z-50  border-b border-border">
-      <div className="container mx-auto px-4 lg:px-8 py-3">
+    <nav className="absolute top-0 left-0 right-0 z-50 border-b border-border">
+      <div className="container mx-auto py-3 relative">
         <button
           onClick={() => setShowDropdown(!showDropdown)}
-          className="flex items-center gap-2 pb-3"
+          className="flex items-center gap-2 mb-3 outline-none"
         >
           <span className="sr-only">Show other test types</span>
           <div className="w-6 h-6 text-icon">
@@ -33,11 +39,9 @@ const Header = ({ icon, title }: HeaderProps) => {
               strokeWidth={1.5}
             />
           </div>
-
           <span className="text-nowrap text-xl font-medium">
             {displayTitle}
           </span>
-
           <div className="relative group">
             <div className="flex items-center">
               <ChevronDown className="h-4 w-4 cursor-pointer" />
@@ -45,20 +49,32 @@ const Header = ({ icon, title }: HeaderProps) => {
           </div>
         </button>
 
-        {showDropdown && (
-          <div className="absolute left-0 mt-2 w-56 bg-popover shadow-md rounded-md p-1 transition-all z-50">
-            {otherTestTypes.map((type) => (
-              <Link
-                key={type.id}
-                href={type.route}
-                className="flex items-center gap-2 p-2 hover:bg-accent rounded-sm text-sm cursor-pointer w-full"
+        <AnimatePresence>
+          {showDropdown && (
+            <>
+              <Backdrop onClick={() => setShowDropdown(false)} />
+              <motion.div
+                key="dropdown"
+                variants={dropdownVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                className="absolute left-0 w-56 bg-background border-2 border-largeCard shadow-md rounded-md p-1 transition-all z-50"
               >
-                <type.icon className="h-4 w-4 text-icon" />
-                <span>{type.name}</span>
-              </Link>
-            ))}
-          </div>
-        )}
+                {otherTestTypes.map((type) => (
+                  <Link
+                    key={type.id}
+                    href={type.route}
+                    className="flex items-center gap-2 p-2 hover:bg-accent rounded-sm text-sm cursor-pointer w-full"
+                  >
+                    <type.icon className="h-4 w-4 text-icon" />
+                    <span>{type.name}</span>
+                  </Link>
+                ))}
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </div>
     </nav>
   );
