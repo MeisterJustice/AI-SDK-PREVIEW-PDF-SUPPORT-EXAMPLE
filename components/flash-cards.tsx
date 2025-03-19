@@ -83,6 +83,10 @@ const FlashCards = ({
     );
   }
 
+  if (!flashCards || flashCards.length === 0) {
+    return <div></div>;
+  }
+
   return (
     <div className="flex flex-col items-center gap-8">
       <div
