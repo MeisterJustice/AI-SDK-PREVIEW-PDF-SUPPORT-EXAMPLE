@@ -9,7 +9,7 @@ export interface FlashcardsState {
 
 const initialState: FlashcardsState = {
   flashcards: [],
-  loading: false,
+  loading: true,
 };
 
 export const flashcardsReducer = createSlice({
