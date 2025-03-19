@@ -51,7 +51,7 @@ const Result = ({
   }, [percentage, showConfetti]);
 
   return (
-    <div className="flex items-center justify-center mt-10 xl:mt-24">
+    <div className="flex items-center justify-center">
       <motion.div
         className="w-full max-w-md mx-auto bg-largeCard rounded-lg shadow-lg p-8"
         initial={{ opacity: 0, scale: 0.9 }}

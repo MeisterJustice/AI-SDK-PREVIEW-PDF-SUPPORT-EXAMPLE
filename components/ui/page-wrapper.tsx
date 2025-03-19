@@ -1,6 +1,6 @@
 import { Copy } from "lucide-react";
 import testTypes from "@/app/(preview)/(home)/data";
-import Header from "./header";
+import Nav from "./header";
 
 interface PageWrapperProps {
   children: React.ReactNode;
@@ -34,7 +34,7 @@ const PageWrapper = ({
 
   return (
     <section className="xl:min-h-[calc(100vh-6rem)] xl:flex xl:flex-col xl:justify-center">
-      <Header icon={IconComponent} title={displayTitle} />
+      <Nav icon={IconComponent} title={displayTitle} />
 
       {showVariantHeader && (
         <div className="flex items-center justify-center gap-2 pb-3">

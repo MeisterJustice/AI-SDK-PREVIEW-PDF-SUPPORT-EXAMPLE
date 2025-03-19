@@ -30,7 +30,7 @@ export default function RootLayout({
               <div className="flex flex-col xl:flex-row xl:justify-between gap-10 xl:gap-20">
                 <div className="xl:w-3/4 flex flex-col gap-10">{children}</div>
 
-                <div className="xl:w-1/4 xl:pt-[60px]">
+                <div className="xl:w-1/4">
                   <PdfSelection />
                 </div>
               </div>

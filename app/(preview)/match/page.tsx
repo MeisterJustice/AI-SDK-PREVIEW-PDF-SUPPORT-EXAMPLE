@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import CardItem from "./card-item";
 import Result from "@/components/result";
 import useAppActions from "@/store/app/actions";
+import StartGame from "./start-game";
 
 export default function MatchPage() {
   const { matchState, appState } = useSystemFunctions();
@@ -19,6 +20,7 @@ export default function MatchPage() {
   const [activeItems, setActiveItems] = useState<string[] | null>(null);
   const [matchedItems, setMatchedItems] = useState<string[]>([]);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
 
   const { items } = matchState;
 
@@ -83,11 +85,15 @@ export default function MatchPage() {
   }, [appState.files]);
 
   useEffect(() => {
-    if (matchedItems.length === items.length) {
+    if (matchedItems.length > 0 && matchedItems.length === items.length) {
       setGameCompleted(true);
       showFileInput(false);
     }
   }, [matchedItems]);
+
+  if (!gameStarted) {
+    return <StartGame handleStartGame={() => setGameStarted(true)} />;
+  }
 
   if (isGenerating || matchState.items.length === 0) {
     return (

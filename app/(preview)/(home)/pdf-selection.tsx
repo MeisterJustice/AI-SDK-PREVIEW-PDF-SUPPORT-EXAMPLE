@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { toast } from "sonner";
 import { FileUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import useSystemFunctions from "@/hooks/useSystemFunctions";
 import useAppActions from "@/store/app/actions";
 
-export default function PdfSelection() {
+const PdfSelection = () => {
   const { appState } = useSystemFunctions();
   const { savePdfFiles, loadExamplePdf } = useAppActions();
 
@@ -64,7 +64,7 @@ export default function PdfSelection() {
 
   return (
     <div
-      className="w-full flex justify-center"
+      className="w-full h-full items-center flex justify-center"
       onDragOver={(e) => {
         e.preventDefault();
         setIsDragging(true);
@@ -142,4 +142,6 @@ export default function PdfSelection() {
       </Card>
     </div>
   );
-}
+};
+
+export default memo(PdfSelection);

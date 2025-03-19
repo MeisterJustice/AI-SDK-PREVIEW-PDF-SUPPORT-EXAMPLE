@@ -5,6 +5,29 @@ import Result from "./result";
 import useAppActions from "@/store/app/actions";
 import useSystemFunctions from "@/hooks/useSystemFunctions";
 
+const variants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 300 : -300,
+    opacity: 0,
+    rotateY: direction > 0 ? -90 : 90,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    rotateY: 0,
+    transition: {
+      type: "spring",
+      stiffness: 500,
+      damping: 30,
+      duration: 0.4,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: { duration: 0.2 },
+  },
+};
+
 const FlashCards = ({
   isLarge = false,
   hideInput = false,
@@ -48,29 +71,6 @@ const FlashCards = ({
     setCurrentIndex(0);
     setIsFlipped(false);
     showFileInput(true);
-  };
-
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 300 : -300,
-      opacity: 0,
-      rotateY: direction > 0 ? -90 : 90,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      rotateY: 0,
-      transition: {
-        type: "spring",
-        stiffness: 500,
-        damping: 30,
-        duration: 0.4,
-      },
-    },
-    exit: {
-      opacity: 0,
-      transition: { duration: 0.2 },
-    },
   };
 
   if (showResult) {
