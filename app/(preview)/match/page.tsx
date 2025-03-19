@@ -9,10 +9,12 @@ import useMatchActions from "@/store/match/actions";
 import { Button } from "@/components/ui/button";
 import CardItem from "./card-item";
 import Result from "@/components/result";
+import useAppActions from "@/store/app/actions";
 
 export default function MatchPage() {
   const { matchState, appState } = useSystemFunctions();
   const { generateMatchItems, shuffleCards, isGenerating } = useMatchActions();
+  const { showFileInput } = useAppActions();
 
   const [activeItems, setActiveItems] = useState<string[] | null>(null);
   const [matchedItems, setMatchedItems] = useState<string[]>([]);
@@ -67,6 +69,7 @@ export default function MatchPage() {
   const handleRestart = () => {
     setActiveItems(null);
     setGameCompleted(false);
+    showFileInput(true);
     generateMatchItems();
   };
 
@@ -82,6 +85,7 @@ export default function MatchPage() {
   useEffect(() => {
     if (matchedItems.length === items.length) {
       setGameCompleted(true);
+      showFileInput(false);
     }
   }, [matchedItems]);
 

@@ -8,6 +8,7 @@ import { QuizQuestion } from "@/store/quiz/schema";
 import useSystemFunctions from "@/hooks/useSystemFunctions";
 import QuizScore from "./score";
 import QuizReview from "./quiz-overview";
+import useAppActions from "@/store/app/actions";
 
 type QuizProps = {
   questions: QuizQuestion[];
@@ -95,6 +96,8 @@ const resetVariants = {
 
 export default function Quiz() {
   const { quizState } = useSystemFunctions();
+  const { showFileInput } = useAppActions();
+
   const { questions, title = "Quiz" } = quizState;
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -129,6 +132,7 @@ export default function Quiz() {
 
   const handleSubmit = () => {
     setIsSubmitted(true);
+    showFileInput(false);
     const correctAnswers = questions.reduce((acc, question, index) => {
       return acc + (question.answer === answers[index] ? 1 : 0);
     }, 0);
